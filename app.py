@@ -15,7 +15,7 @@ def index():
     
     try:
         id =  session['id']
-        id = db.execute("SELECT id FROM users WHERE id = ?;", fernet.decrypt(id).decode())
+        id = db.execute("SELECT id FROM users WHERE id = ?", fernet.decrypt(id).decode())
         if bool(id):
             return render_template('mainpage.html')
     except:
@@ -25,13 +25,15 @@ def signup():
     if request.method=="GET":
         return render_template('signup.html')
     username = request.form.get('username')
-    if not bool(str(db.execute('SELECT * FROM users WHERE username = ?;', username))):
+    if not bool(str(db.execute('SELECT * FROM users WHERE username = ?', username))):
         return "USERNAME ALREADY TAKEN"
     password = request.form.get('password')
     #password = sha256(request.form.get('password').encode('ascii'))
     birthdate = request.form.get('birthdate')
-    db.execute("INSERT INTO users(username, password, birthdate) VALUES (?, ?, ?);", username, password, birthdate)
-    id = db.execute("SELECT id FROM users WHERE username=? AND password=?;", username, password)
+    db.execute("INSERT INTO users(username, password) VALUES (?, ?)", username, password)
+    id = db.execute("SELECT id FROM users WHERE username=? AND password=?", username, password)
+    id = str(id[0]['id'])
+    print(id)
     id = fernet.encrypt(id.encode())
     session['id'] = id
     return id
@@ -41,7 +43,8 @@ def login():
         username = request.form.get('username')
         password=request.form.get('password')
         #password = sha256(request.form.get('password').encode('ascii'))
-        id = db.execute("SELECT id FROM users WHERE username=? AND password=?;", username, password)
+        id = db.execute("SELECT id FROM users WHERE username=? AND password=?", username, password)
+        id = str(id[0]['id'])
         if bool(id):
             id = fernet.encrypt(id.encode())
             session['id'] = id
