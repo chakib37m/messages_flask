@@ -1,16 +1,15 @@
 {% extends "layout.html" %}
 {% block head %}
-<title>Messages</title>
+<title>Sign up</title>
 {% endblock %}
 {% block page %}
-<div class="login">
-  <form action="/login" method="post">
+<div class="signup">
+  <form action="/signup" method="post">
     <input type="text" name="username" placeholder="Username">
     <input type="password" name="password" placeholder="Password">
-    <input type="submit" value="Log in">
+    <input type="text" name="username" placeholder="Date of birth yyyy-mm-dd">
+    <input type="submit" value="Sign Up">
   </form>
-
-No account yet? <a href="/signup">Sign up</a>
 
 </div>
 {% endblock %}

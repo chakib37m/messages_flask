@@ -1,4 +1,6 @@
 Flask
-Flask-Session
+Flask_Session
 CS50
 jsonify
+hashlib
+cryptography
